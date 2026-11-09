@@ -11,7 +11,7 @@ python3 tables.py 5m
 ```
 
 ```bash
-python3 beat.py 5m magree
+python3 beat.py 5m fitgate
 ```
 
 ```bash
@@ -159,22 +159,22 @@ python3 kaggle/merge.py myjob 1h
 Train with `--keep` first, then run a script from `debug/`.
 
 ```bash
-python3 env.py --method magree --tier 5m --lr 0.01 --keep
+python3 env.py --method fitgate --tier 5m --lr 0.01 --keep
 ```
 
 ```bash
-python3 debug/ablate.py 5m magree 0.01
+python3 debug/ablate.py 5m fitgate 0.01
 ```
 
 ```bash
-python3 debug/speed.py 5m engram magree
+python3 debug/speed.py 5m engram fitgate
 ```
 
 [EXPERIMENTS.md](EXPERIMENTS.md) lists what each script asks and found.
 
 ## Check that your setup matches
 
-A clean copy of this repo gave the recorded scores exactly for `plain` at 5s, `engram` at 5s and `magree` at 1m on a CPU. Other machines and GPUs can give slightly different numbers.
+A clean copy of this repo gave the recorded scores exactly for `plain` at 5s, `engram` at 5s and `fitgate` at 1m on a CPU. Other machines and GPUs can give slightly different numbers.
 
 ```bash
 python3 env.py --method plain --tier 5s --lr 0.02 --tag mycheck

@@ -1,4 +1,4 @@
-"""Draws the architecture figures in the README: `mmomez` to architecture.svg and .png, `magree` to architecture-magree.svg and .png. python3 charts/architecture.py
+"""Draws the architecture figures in the README: `mmomez` to architecture.svg and .png, `fitgate` to architecture-fitgate.svg and .png. python3 charts/architecture.py
 Needs rsvg-convert for the PNG. The wiring follows three(), MoME and Agree in methods.py and Block and LM in env.py."""
 import os, subprocess
 
@@ -108,7 +108,7 @@ def zoom_mmomez():
     text(1216, 72, "Attention with MoME, last block only", 16, "end", "bold")
 
 
-def zoom_magree():
+def zoom_fitgate():
     line((575, B), (1184, B), arrow=False)
     for x, n in ((575, "Q"), (645, "K"), (715, "V")):
         line((x, B), (x, 730)); trap(x, 713, 58, n); dot(x, B) if x != 575 else None
@@ -158,4 +158,4 @@ def draw(name, table, zoom, zero):
 
 
 draw("architecture", "Attention + MoME", zoom_mmomez, True)
-draw("architecture-magree", "Attention + Table", zoom_magree, False)
+draw("architecture-fitgate", "Attention + Table", zoom_fitgate, False)

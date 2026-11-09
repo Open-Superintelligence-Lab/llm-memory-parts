@@ -1,6 +1,6 @@
 # Research directions for LLM memory modules
 
-These directions were written for the public environment. The paper in this repo is on what each part of `magree` does, and its questions are in [QUESTIONS.md](QUESTIONS.md).
+These directions were written for the public environment. The paper in this repo is on what each part of `fitgate` does, and its questions are in [QUESTIONS.md](QUESTIONS.md).
 
 > [!IMPORTANT]
 > **Each direction below can support a separate paper.** The strongest result so far is `mmomez` at 1h, about 43M weights: it has the lowest web loss, ties the best published modules on fact recall, and loses the relation gap. The largest tier has never run, and nothing yet shows the small models predict large ones. Check all of it before you submit.
@@ -13,14 +13,14 @@ An AI coding agent did this work and wrote this page. No person or reviewer has 
 
 ### Papers about a new module
 
-1. **Fix the leak.** Can a table recall a fact in new wording and hold it back when the question changes? No run here does both. `magree` has new wording .724 and gap 4.082, and Engram has 2.553 and 5.368.
-2. **Change the key.** `magree` keys rows by token and code. `mbuck64` keys them by token and a bucket of another token, and it has the only gap above Engram's. Can one key do both jobs?
+1. **Fix the leak.** Can a table recall a fact in new wording and hold it back when the question changes? No run here does both. `fitgate` has new wording .724 and gap 4.082, and Engram has 2.553 and 5.368.
+2. **Change the key.** `fitgate` keys rows by token and code. `mbuck64` keys them by token and a bucket of another token, and it has the only gap above Engram's. Can one key do both jobs?
 3. **Change the gate.** The cosine gate helped new wording at 5m and hurt at 1m, and it did not close under the wrong relation. What should a gate read instead? `mexp8` teaches it with a next-word head during training, at 2.25x the cost.
-4. **Put the row in the values.** `magree` adds its row after attention, and Memory Attention 2609.28399 finds values better. `mmomez`, with MoME in the values, has the lowest web loss at 1h.
+4. **Put the row in the values.** `fitgate` adds its row after attention, and Memory Attention 2609.28399 finds values better. `mmomez`, with MoME in the values, has the lowest web loss at 1h.
 5. **Move the tables.** Which block should each table sit in? The n-gram table protects the gap from the last block, and Qwen3.8-Next found no clearly best depth for one n-gram layer.
 6. **Split the budget.** How should weights divide between tables and MoE as the model grows? MoE alone has the best relation gap at 1h, and adding MoE changed designs differently at 5m and 1h.
 7. **Share or drop tables.** Is one table enough once MoE is present? `momemoe` reaches part of the gain with no new parts.
-8. **Make it cheap.** `magree` costs 1.40x Engram's step, and each head reads 8 rows per position (4 tokens x 2 codes). Can it keep the gain with fewer reads?
+8. **Make it cheap.** `fitgate` costs 1.40x Engram's step, and each head reads 8 rows per position (4 tokens x 2 codes). Can it keep the gain with fewer reads?
 
 ### Papers about the test
 
@@ -62,14 +62,14 @@ An AI coding agent did this work and wrote this page. No person or reviewer has 
 | About 90 new designs, with predictions written first | Done, see [EXPERIMENTS.md](EXPERIMENTS.md) |
 | Why tables lose the relation gap, switch-off tests | Done at 5m |
 | Time per step | Done at 5m on one CPU thread |
-| Hidden items | Read for baselines, `tmomez` and `tmixz`. Scored but not read for `magree`, `mexp8` and the MoE controls at 1h |
+| Hidden items | Read for baselines, `tmomez` and `tmixz`. Scored but not read for `fitgate`, `mexp8` and the MoE controls at 1h |
 
 ---
 
 ## Do these before you submit any of them
 
 - **Train each setting more than once.** Each setting has one training run, so standard errors cover items only. Some z scores here will shrink.
-- **Score your final design on hidden items, once, at the end.** `mmomez`, `mapair` and `mbuck64` have never used them. The 1h job also scored `magree`, `mexp8` and the MoE controls on them, and those scores are in `final_results.jsonl`, unread. The hidden scores of `tmomez` and `tmixz` were read before `magree` was built, so consider holding out new items.
+- **Score your final design on hidden items, once, at the end.** `mmomez`, `mapair` and `mbuck64` have never used them. The 1h job also scored `fitgate`, `mexp8` and the MoE controls on them, and those scores are in `final_results.jsonl`, unread. The hidden scores of `tmomez` and `tmixz` were read before `fitgate` was built, so consider holding out new items.
 - **Tune all designs equally.** 43 of 70 methods at 5m ran at one lr, and baselines ran at two.
 - **Compare the ports with the authors' code.** They follow the papers' text, and the docstrings in `methods.py` say what was adapted. Any error here changes the results for that module.
 - **Finish the literature check**, see below.
@@ -82,7 +82,7 @@ An AI coding agent did this work and wrote this page. No person or reviewer has 
 - **"These are toy models."** Yes, about 50M weights at most so far. Direction 11 is the answer, and it may come out against the test. HellaSwag, ARC, MMLU and WinoGrande sit near chance through 1h, and BLiMP is the only benchmark that moves clearly.
 - **"Planted facts are not real knowledge."** Natural facts do not rank modules at 1m or 5m. Planted-fact scores could measure only memorization of the planted text.
 - **"Your small tiers disagree with published rankings."** They do. About half of published rankings hold, and published gaps of about .001 can't be seen here. Say this openly and use tokens per table row, which explains one mismatch.
-- **"You used more compute."** `magree` costs 1.40x Engram's step and `mexp8` 2.25x, and the win rule caps only weights. Direction 15 answers this.
+- **"You used more compute."** `fitgate` costs 1.40x Engram's step and `mexp8` 2.25x, and the win rule caps only weights. Direction 15 answers this.
 
 ---
 
@@ -92,7 +92,7 @@ Three extended searches found no shared multi-score test. Those searches do not 
 
 | Work | Why it matters here | Read? |
 |---|---|---|
-| Engram, 2601.07372 | Baseline. Its gate compares the hidden state with the retrieved row, close to `magree`'s gate. | Read |
+| Engram, 2601.07372 | Baseline. Its gate compares the hidden state with the retrieved row, close to `fitgate`'s gate. | Read |
 | Lngram, 2605.24869 | Compares MoE, MoE + Engram and MoE + Lngram at 2B, with gains on MMLU, SciQ and PIQA. So MoE + Engram is published. | Read |
 | Lngram v2, 2609.03426 | Scales to a 30B model with parameter-matched baselines. | Not read in full |
 | MoME, 2609.15126 | Baseline. Its tables compare MoME, VE, Bigram, STEM and Engram on validation loss, and Table 4 scales MoME with Bigram. | Tables used in `claims.py` and the port |

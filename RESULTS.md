@@ -20,7 +20,7 @@ The training text is fresh web text, each token read once, plus 10% planted fact
 > [!WARNING]
 > z only says how much a gap depends on which test items were used. Each setting has one training run, so z does not include how much a score changes between training runs. For scale, changing only the lr moved `tmix` at 1m from web 5.453 to 5.462.
 
-**Learning rate.** Baselines ran at lr .01 and .02, and also .04 at 1m, except `moe` at 5m, which ran at .01 only. The lr with the lowest loss on separate tuning rows is the one reported. **Many designs ran at only one lr:** 43 of 70 methods at 5m, including `mexp8` and `mbuck64`, ran at .01 only. `magree`, `mapair` and the controls ran at both.
+**Learning rate.** Baselines ran at lr .01 and .02, and also .04 at 1m, except `moe` at 5m, which ran at .01 only. The lr with the lowest loss on separate tuning rows is the one reported. **Many designs ran at only one lr:** 43 of 70 methods at 5m, including `mexp8` and `mbuck64`, ran at .01 only. `fitgate`, `mapair` and the controls ran at both.
 
 ---
 
@@ -38,7 +38,7 @@ The rule caps weights and not compute. See [the speed table](#count-compute-too-
 
 ## No module passes the win rule, published or new
 
-About 90 designs ran, counting table-size variants. `magree` is the closest on facts and `mbuck64` is the closest on the relation gap. Each one fails a different part of the rule.
+About 90 designs ran, counting table-size variants. `fitgate` is the closest on facts and `mbuck64` is the closest on the relation gap. Each one fails a different part of the rule.
 
 The rule is strict, and the published modules fail it too. Scored against the other 8 baselines with `python3 beat.py TIER NAME`:
 
@@ -51,12 +51,12 @@ The rule is strict, and the published modules fail it too. Scored against the ot
 
 So treat the rule as a target. A module can be useful for one job and fail it.
 
-### At 5m, `magree` leads on web text and facts and loses the relation gap
+### At 5m, `fitgate` leads on web text and facts and loses the relation gap
 
 | design, lr | weights | web loss | stored facts | new wording | name far | relation gap | usual phrase |
 |---|---|---|---|---|---|---|---|
 | baseline best | | 5.386 mome | 0.224 ve | 0.962 ve | 1.784 ve | 5.368 engram | 1.595 engram |
-| magree 0.01 | 4.75M | 5.365 (+4.7) | 0.098 (+5.0) | 0.724 (+2.3) | 1.068 (+8.3) | 4.082 (-8.4) | 1.567 (+1.0) |
+| fitgate 0.01 | 4.75M | 5.365 (+4.7) | 0.098 (+5.0) | 0.724 (+2.3) | 1.068 (+8.3) | 4.082 (-8.4) | 1.567 (+1.0) |
 | mexp8 0.01 | 4.76M | 5.365 (+4.9) | 0.169 (+1.7) | 1.026 (-0.8) | 1.630 (+1.8) | 4.595 (-5.3) | 1.591 (+0.1) |
 | mapair 0.01 | 4.74M | 5.367 (+4.3) | 0.261 (-1.1) | 1.430 (-5.1) | 2.433 (-7.1) | 5.137 (-1.7) | 1.583 (+0.5) |
 | mbuck64 0.01 | 4.74M | 5.378 (+1.8) | 0.279 (-1.7) | 1.644 (-6.0) | 2.377 (-6.3) | 5.598 (+1.6) | 1.578 (+0.7) |
@@ -64,23 +64,23 @@ So treat the rule as a target. A module can be useful for one job and fail it.
 | tmomez 0.01 | 4.73M | 5.368 (+3.9) | 0.111 (+3.9) | 0.838 (+1.8) | 1.480 (+3.7) | 3.665 (-12.1) | 1.544 (+2.4) |
 | tmixz 0.01 | 4.73M | 5.366 (+4.6) | 0.104 (+5.3) | 1.161 (-2.0) | 1.623 (+1.7) | 3.867 (-10.3) | 1.534 (+2.3) |
 
-> **`magree` beats every baseline on web loss, stored facts, new wording and far names at 5m, and loses the relation gap by 8.4 standard errors, even to the plain model with no memory (4.082 against 4.512).**
+> **`fitgate` beats every baseline on web loss, stored facts, new wording and far names at 5m, and loses the relation gap by 8.4 standard errors, even to the plain model with no memory (4.082 against 4.512).**
 
 ![Relation gap against new-wording loss at 5m](charts/tradeoff-5m.png)
 
-More relation gap tends to come with worse new-wording loss. `mbuck64` has the best gap of the designs, and its web lead is under 2 standard errors. `magree` has the best new wording and a low gap. No run reaches the corner with both. The chart leaves out `nmtrip1`, `nmtrip5`, `nplain` and `bigram6`, whose new-wording loss is above 4.5. They are in the full table below.
+More relation gap tends to come with worse new-wording loss. `mbuck64` has the best gap of the designs, and its web lead is under 2 standard errors. `fitgate` has the best new wording and a low gap. No run reaches the corner with both. The chart leaves out `nmtrip1`, `nmtrip5`, `nplain` and `bigram6`, whose new-wording loss is above 4.5. They are in the full table below.
 
-### At 1m, `magree` has no web lead at all
+### At 1m, `fitgate` has no web lead at all
 
 | design, lr | weights | web loss | stored facts | new wording | name far | relation gap | usual phrase |
 |---|---|---|---|---|---|---|---|
 | baseline best | | 5.466 token | 0.635 mome | 2.091 mome | 3.011 mome | 4.395 bigram | 1.715 token |
-| magree 0.01 | 1.76M | 5.466 (-0.1) | 0.490 (+1.9) | 2.582 (-1.9) | 3.120 (-0.6) | 3.627 (-3.5) | 1.662 (+1.1) |
+| fitgate 0.01 | 1.76M | 5.466 (-0.1) | 0.490 (+1.9) | 2.582 (-1.9) | 3.120 (-0.6) | 3.627 (-3.5) | 1.662 (+1.1) |
 | mtrip 0.01 | 1.75M | 5.458 (+1.0) | 0.294 (+5.2) | 2.162 (-0.3) | 2.758 (+1.5) | 3.864 (-2.4) | 1.613 (+2.0) |
 | mapair 0.01 | 1.75M | 5.459 (+1.1) | 1.371 (-5.7) | 3.705 (-4.9) | 4.303 (-5.9) | 4.223 (-0.9) | 1.651 (+1.1) |
 | mbuck64 0.01 | 1.75M | 5.481 (-2.3) | 1.395 (-5.7) | 3.258 (-4.7) | 4.051 (-5.6) | 4.571 (+1.0) | 1.624 (+2.0) |
 
-> **The 5m lead of `magree` does not hold at 1m: web loss ties, and the relation gap loses by 3.5 standard errors.** `mapair` also changes a lot with size: its stored-fact loss is .261 at 5m and 1.371 at 1m.
+> **The 5m lead of `fitgate` does not hold at 1m: web loss ties, and the relation gap loses by 3.5 standard errors.** `mapair` also changes a lot with size: its stored-fact loss is .261 at 5m and 1.371 at 1m.
 
 ---
 
@@ -94,11 +94,11 @@ The `m...` designs carry MoE (mixture of experts, 1 shared expert plus the top 2
 | engmoe 0.02 | 4.73M | 5.407 (-4.3) | 0.607 (-8.3) | 2.310 (-8.4) | 3.123 (-13.8) | 5.193 (-1.4) | 1.606 (-0.5) |
 | vemoe 0.02 | 4.34M | 5.389 (-0.6) | 0.467 (-5.2) | 1.415 (-5.0) | 2.530 (-8.3) | 4.056 (-9.4) | 1.690 (-3.8) |
 | momemoe 0.01 | 4.35M | 5.379 (+1.8) | 0.179 (+1.8) | 0.786 (+2.2) | 1.450 (+4.3) | 3.385 (-13.5) | 1.665 (-2.5) |
-| magree 0.01 | 4.75M | 5.365 (+4.7) | 0.098 (+5.0) | 0.724 (+2.3) | 1.068 (+8.3) | 4.082 (-8.4) | 1.567 (+1.0) |
+| fitgate 0.01 | 4.75M | 5.365 (+4.7) | 0.098 (+5.0) | 0.724 (+2.3) | 1.068 (+8.3) | 4.082 (-8.4) | 1.567 (+1.0) |
 
-> **`momemoe` uses only published parts and 8% fewer weights, and it already beats every baseline on new wording and far names, so part of `magree`'s fact gain is not new.** `magree` still beats it directly: web z +2.8, stored +2.9, far names +4.7, relation gap +5.4, usual phrase +3.7. New wording ties (+.5).
+> **`momemoe` uses only published parts and 8% fewer weights, and it already beats every baseline on new wording and far names, so part of `fitgate`'s fact gain is not new.** `fitgate` still beats it directly: web z +2.8, stored +2.9, far names +4.7, relation gap +5.4, usual phrase +3.7. New wording ties (+.5).
 
-`magree` against Engram + MoE: web +8.6, stored +9.1, new wording +9.7, far names +16.0, usual phrase +1.3, relation gap -7.5.
+`fitgate` against Engram + MoE: web +8.6, stored +9.1, new wording +9.7, far names +16.0, usual phrase +1.3, relation gap -7.5.
 
 MoE + Engram is already published (Lngram, 2605.24869), so `engmoe` is a known combination.
 
@@ -192,7 +192,7 @@ At 1h (width 256, 6 layers, 10000 steps, weight limit 43.54M):
 | design, lr | weights | web loss | stored facts | new wording | name far | relation gap | usual phrase |
 |---|---|---|---|---|---|---|---|
 | baseline best | | 4.591 mome | 0.084 bigram | 1.417 stem | 1.825 stem | 6.041 moe | 1.456 engram |
-| magree 0.02 | 43.38M | 4.558 (+12.2) | 0.062 (+2.2) | 1.484 (-0.7) | 1.605 (+2.5) | 4.245 (-15.4) | 1.422 (+3.5) |
+| fitgate 0.02 | 43.38M | 4.558 (+12.2) | 0.062 (+2.2) | 1.484 (-0.7) | 1.605 (+2.5) | 4.245 (-15.4) | 1.422 (+3.5) |
 | mexp8 0.01 | 43.44M | 4.554 (+13.0) | 0.072 (+0.9) | 1.837 (-3.4) | 2.283 (-4.1) | 4.581 (-11.8) | 1.425 (+3.5) |
 | mmomez 0.01 | 43.30M | 4.550 (+14.3) | 0.091 (-0.4) | 1.370 (+0.5) | 1.706 (+1.4) | 4.383 (-14.4) | 1.410 (+4.8) |
 | mmixz 0.01 | 43.30M | 4.553 (+13.2) | 0.065 (+1.7) | 1.422 (-0.0) | 1.695 (+1.2) | 3.830 (-17.8) | 1.413 (+5.0) |
@@ -205,7 +205,7 @@ At 1h (width 256, 6 layers, 10000 steps, weight limit 43.54M):
 | engmoe 0.01 | 43.20M | 4.584 (+2.2) | 0.074 (+1.0) | 3.353 (-9.7) | 3.710 (-11.9) | 4.976 (-8.8) | 1.433 (+3.3) |
 | vemoe 0.01 | 29.91M | 4.581 (+3.7) | 0.111 (-2.3) | 1.709 (-2.9) | 2.106 (-3.3) | 4.902 (-9.7) | 1.480 (-2.6) |
 
-`magree`, `mexp8` and the controls ran in a later job, with both lrs. Every design here keeps the relation gap as its main loss.
+`fitgate`, `mexp8` and the controls ran in a later job, with both lrs. Every design here keeps the relation gap as its main loss.
 
 `tmomez` also loses all three fact scores by 2 standard errors or more. MoE alone has the best relation gap at 1h (6.041). At 5m adding MoE raised the gap of a design, `ttrip` 3.19 to `mtrip` 4.28. At 1h it does not: `ttrip` 4.416, `mtrip` 4.166.
 
@@ -216,7 +216,7 @@ At 1h (width 256, 6 layers, 10000 steps, weight limit 43.54M):
 
 ## Check hidden items once, at the end
 
-A third of the text rows and facts and half of each benchmark are held back, and `env.py --final` scores them. Their scores have been read only for baselines, `tmomez` and `tmixz`, in 35 runs. **The 1h job also scored `magree`, `mexp8` and the MoE controls on them, 10 runs that are in `final_results.jsonl` and that nobody has read. `mmomez`, `mapair` and `mbuck64` have not been scored on them.** The hidden scores of `tmomez` and `tmixz` were read before `magree` was built, so these items are not fully fresh.
+A third of the text rows and facts and half of each benchmark are held back, and `env.py --final` scores them. Their scores have been read only for baselines, `tmomez` and `tmixz`, in 35 runs. **The 1h job also scored `fitgate`, `mexp8` and the MoE controls on them, 10 runs that are in `final_results.jsonl` and that nobody has read. `mmomez`, `mapair` and `mbuck64` have not been scored on them.** The hidden scores of `tmomez` and `tmixz` were read before `fitgate` was built, so these items are not fully fresh.
 
 Hidden items at 5m:
 
@@ -256,12 +256,12 @@ Time per training step at 5m, one method at a time on one CPU thread, from `debu
 | momemoe | .228 | 1.21x | 4.35M |
 | vemoe | .229 | 1.21x | 4.34M |
 | mtrip | .259 | 1.37x | 4.74M |
-| **magree** | **.265** | **1.40x** | **4.75M** |
+| **fitgate** | **.265** | **1.40x** | **4.75M** |
 | mexp8 | .425 | 2.25x | 4.76M |
 
 `mmomez`, timed later in a separate run of the same script: .251 seconds per step, 1.31x Engram in that run.
 
-> **`magree` costs 1.40x Engram's time per step. A fair comparison would give Engram that time as well, and that has not been run.**
+> **`fitgate` costs 1.40x Engram's time per step. A fair comparison would give Engram that time as well, and that has not been run.**
 
 Do not read speed from `train_s` in `results.jsonl`. Those runs shared the machine.
 
@@ -271,7 +271,7 @@ Do not read speed from `train_s` in `results.jsonl`. Those runs shared the machi
 
 A boost that ignores the question raises the right and the wrong answer alike. The right answer's log-probability can't go above 0 and the wrong answer's can keep rising, so strong recall tends to shrink the gap. To see which table does this, each memory of a trained model was switched off at test time. Scores are log-probabilities of the stored answer, on stored facts.
 
-`magree` at 5m:
+`fitgate` at 5m:
 
 | Switched off | Own question | Wrong relation | Gap |
 |---|---|---|---|
@@ -291,11 +291,11 @@ A boost that ignores the question raises the right and the wrong answer alike. T
 | Triple table inside attention | -4.063 | -9.179 | 5.116 |
 | all three | -8.655 | -8.818 | .162 |
 
-![Effect of switching off each table in magree at 5m](charts/switch-off.png)
+![Effect of switching off each table in fitgate at 5m](charts/switch-off.png)
 
 > **The table inside attention raises the wrong answer by 3.42 and the right one by 2.32. The gate was meant to close on a wrong relation, and it does not.**
 
-`magree`'s gate reads the hidden state against the retrieved row, which is close to Engram's published gate (Engram section 2.3). It improved new wording and did not fix the leak. The n-gram table after the last block does the opposite: without it the wrong answer rises to -4.569 and the gap falls to 2.560. So the n-gram table protects the gap, and that is what the other tables lack.
+`fitgate`'s gate reads the hidden state against the retrieved row, which is close to Engram's published gate (Engram section 2.3). It improved new wording and did not fix the leak. The n-gram table after the last block does the opposite: without it the wrong answer rises to -4.569 and the gap falls to 2.560. So the n-gram table protects the gap, and that is what the other tables lack.
 
 ---
 
@@ -314,17 +314,17 @@ All judging scores against the best baseline on each, at the tuned lr:
 
 | Design | Tier | 12 scores on the fixed test: better / worse | 31 scores from the older list: better / worse |
 |---|---|---|---|
-| `magree` | 5m | 3 / 2 | 14 / 3 |
+| `fitgate` | 5m | 3 / 2 | 14 / 3 |
 | `momemoe` | 5m | 1 / 5 | 8 / 6 |
 | `tmomez` | 5m | 7 / 3 | 15 / 3 |
 | `tmixz` | 5m | 7 / 3 | 16 / 6 |
 | `mapair` | 5m | 5 / 1 | 6 / 6 |
 | `mexp8` | 5m | 4 / 3 | 8 / 6 |
-| `magree` | 1m | 0 / 5 | 3 / 7 |
+| `fitgate` | 1m | 0 / 5 | 3 / 7 |
 | `mtrip` | 1m | 1 / 3 | 7 / 5 |
 | `mmomez` | 1h | 9 / 3 | 14 / 5 |
 
-`magree`'s two losses on the 12 at 5m are the relation gap and fiction text (z -9.2 against `token`).
+`fitgate`'s two losses on the 12 at 5m are the relation gap and fiction text (z -9.2 against `token`).
 
 Which baseline leads how many scores:
 
@@ -425,12 +425,12 @@ Each row is one method at its tuned lr, including every failed idea. [EXPERIMENT
 | m2trip | 0.01 | 4.73M | 5.366 | 0.102 | 1.071 | 1.319 | 4.061 | 1.596 |
 | mtok | 0.01 | 4.73M | 5.376 | 0.125 | 1.057 | 1.434 | 3.846 | 1.655 |
 | mgram | 0.01 | 4.72M | 5.394 | 0.123 | 1.026 | 1.556 | 3.971 | 1.592 |
-| magreed | 0.01 | 4.75M | 5.374 | 0.112 | 0.807 | 1.210 | 3.884 | 1.565 |
-| magree | 0.01 | 4.75M | 5.365 | 0.098 | 0.724 | 1.068 | 4.082 | 1.567 |
-| magree1 | 0.01 | 4.75M | 5.372 | 0.178 | 1.398 | 2.008 | 4.686 | 1.575 |
-| magreef | 0.01 | 4.75M | 5.365 | 0.100 | 0.772 | 1.218 | 3.843 | 1.573 |
+| fitgated | 0.01 | 4.75M | 5.374 | 0.112 | 0.807 | 1.210 | 3.884 | 1.565 |
+| fitgate | 0.01 | 4.75M | 5.365 | 0.098 | 0.724 | 1.068 | 4.082 | 1.567 |
+| fitgate1 | 0.01 | 4.75M | 5.372 | 0.178 | 1.398 | 2.008 | 4.686 | 1.575 |
+| fitgatef | 0.01 | 4.75M | 5.365 | 0.100 | 0.772 | 1.218 | 3.843 | 1.573 |
 | mapair | 0.01 | 4.74M | 5.367 | 0.261 | 1.430 | 2.433 | 5.137 | 1.583 |
-| magree8 | 0.01 | 4.75M | 5.370 | 0.122 | 0.866 | 1.460 | 4.158 | 1.565 |
+| fitgate8 | 0.01 | 4.75M | 5.370 | 0.122 | 0.866 | 1.460 | 4.158 | 1.565 |
 | mapair2 | 0.01 | 4.72M | 5.384 | 0.266 | 1.599 | 2.478 | 4.521 | 1.607 |
 | mboth | 0.01 | 4.74M | 5.367 | 0.105 | 0.772 | 1.248 | 3.702 | 1.614 |
 | mapair8 | 0.01 | 4.74M | 5.366 | 0.255 | 1.691 | 2.470 | 5.040 | 1.562 |
@@ -508,7 +508,7 @@ Each row is one method at its tuned lr, including every failed idea. [EXPERIMENT
 | thash4 | 0.01 | 1.75M | 5.465 | 1.028 | 2.939 | 3.646 | 3.859 | 1.671 |
 | mtrip | 0.01 | 1.75M | 5.458 | 0.294 | 2.162 | 2.758 | 3.864 | 1.613 |
 | mbtrip | 0.02 | 1.75M | 5.470 | 0.432 | 2.013 | 3.105 | 3.853 | 1.601 |
-| magree | 0.01 | 1.76M | 5.466 | 0.490 | 2.582 | 3.120 | 3.627 | 1.662 |
+| fitgate | 0.01 | 1.76M | 5.466 | 0.490 | 2.582 | 3.120 | 3.627 | 1.662 |
 | mapair | 0.01 | 1.75M | 5.459 | 1.371 | 3.705 | 4.303 | 4.223 | 1.651 |
 | apair | 0.01 | 1.76M | 5.460 | 1.199 | 3.190 | 3.801 | 4.228 | 1.645 |
 | mbuck64 | 0.01 | 1.75M | 5.481 | 1.395 | 3.258 | 4.051 | 4.571 | 1.624 |
@@ -543,7 +543,7 @@ Each row is one method at its tuned lr, including every failed idea. [EXPERIMENT
 | tpair | 0.01 | 43.37M | 4.601 | 0.094 | 1.448 | 1.906 | 4.399 | 1.425 |
 | thash4 | 0.01 | 43.38M | 4.607 | 0.143 | 1.593 | 2.293 | 4.933 | 1.446 |
 | mmixz | 0.01 | 43.30M | 4.553 | 0.065 | 1.422 | 1.695 | 3.830 | 1.413 |
-| magree | 0.02 | 43.38M | 4.558 | 0.062 | 1.484 | 1.605 | 4.245 | 1.422 |
+| fitgate | 0.02 | 43.38M | 4.558 | 0.062 | 1.484 | 1.605 | 4.245 | 1.422 |
 | mexp8 | 0.01 | 43.44M | 4.554 | 0.072 | 1.837 | 2.283 | 4.581 | 1.425 |
 | engmoe | 0.01 | 43.20M | 4.584 | 0.074 | 3.353 | 3.710 | 4.976 | 1.433 |
 | vemoe | 0.01 | 29.91M | 4.581 | 0.111 | 1.709 | 2.106 | 4.902 | 1.480 |
@@ -591,7 +591,7 @@ python3 tables.py 5m
 ```
 
 ```bash
-python3 beat.py 5m magree mexp8 mapair mbuck64
+python3 beat.py 5m fitgate mexp8 mapair mbuck64
 ```
 
 ```bash
@@ -610,4 +610,4 @@ python3 claims.py
 python3 audit.py
 ```
 
-To train one again, see [SETUP.md](SETUP.md). `plain`, `engram` and `magree` were rerun from a clean copy of this repo, and they gave the recorded scores exactly.
+To train one again, see [SETUP.md](SETUP.md). `plain`, `engram` and `fitgate` were rerun from a clean copy of this repo, and they gave the recorded scores exactly.

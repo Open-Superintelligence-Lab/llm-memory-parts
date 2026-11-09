@@ -21,12 +21,12 @@ def rows(after):
 
 pts = {r[0]: (float(r[7]), float(r[5])) for r in rows("<summary>5m,") if r[0] not in OFF_AXIS}
 fig, ax = plt.subplots(figsize=(9, 6), dpi=160)
-NAMED = {"magree", "mexp8", "mapair", "mbuck64"}
+NAMED = {"fitgate", "mexp8", "mapair", "mbuck64"}
 ax.scatter([pts[m][0] for m in NAMED], [pts[m][1] for m in NAMED], s=70, c=CORAL, linewidths=1, edgecolors="white", zorder=3)
 groups = [("New designs", [m for m in pts if m not in BASE | CONTROL | NAMED | {"plain"}], CORAL, 34, 0.55), ("Published modules", [m for m in pts if m in BASE], TEAL, 70, 1), ("Published module + MoE", [m for m in pts if m in CONTROL], PURPLE, 70, 1), ("No memory", ["plain"], GRAY, 70, 1)]
 for name, ms, col, size, a in groups:
     ax.scatter([pts[m][0] for m in ms], [pts[m][1] for m in ms], s=size, c=col, alpha=a, linewidths=1, edgecolors="white", label=name, zorder=3)
-LABEL = {"magree": (9, -9), "mbuck64": (8, 0), "mapair": (8, 4), "mexp8": (8, -4), "engram": (8, 3), "ve": (-8, -3), "mome": (-10, 5), "momemoe": (-14, -14), "engmoe": (8, 2), "plain": (8, 3), "bigram": (8, 4), "token": (8, 3), "stem": (8, -10), "moe": (-8, 3), "tngram": (8, -9), "vemoe": (8, -4)}
+LABEL = {"fitgate": (9, -9), "mbuck64": (8, 0), "mapair": (8, 4), "mexp8": (8, -4), "engram": (8, 3), "ve": (-8, -3), "mome": (-10, 5), "momemoe": (-14, -14), "engmoe": (8, 2), "plain": (8, 3), "bigram": (8, 4), "token": (8, 3), "stem": (8, -10), "moe": (-8, 3), "tngram": (8, -9), "vemoe": (8, -4)}
 for m, off in LABEL.items():
     ax.annotate(m, pts[m], xytext=off, textcoords="offset points", fontsize=9.5, color=INK, ha="right" if off[0] < 0 else "left", zorder=4)
 ax.set_xlim(2.9, 6.0); ax.set_ylim(3.7, 0.45); ax.grid(True, color=GRID, lw=.8, zorder=0); ax.set_axisbelow(True)
@@ -36,7 +36,7 @@ ax.set_title("At 5m, no run matches the best baseline on both recalling a fact\n
 ax.legend(frameon=False, loc="lower left", fontsize=10)
 fig.tight_layout(); fig.savefig(os.path.join(HERE, "charts", "tradeoff-5m.png")); plt.close(fig)
 
-t = rows("`magree` at 5m:")
+t = rows("`fitgate` at 5m:")
 fig, ax = plt.subplots(figsize=(9, 3.9), dpi=160)
 for i, r in enumerate(t):
     own, wrong = float(r[1]), float(r[2]); y = len(t) - 1 - i
@@ -47,6 +47,6 @@ for i, r in enumerate(t):
 ax.set_yticks(range(len(t))); ax.set_yticklabels([r[0] for r in t][::-1], color=INK); ax.set_xlim(-10, 0); ax.set_ylim(-.6, len(t) - .3)
 ax.grid(True, axis="x", color=GRID, lw=.8, zorder=0); ax.set_axisbelow(True); ax.spines["left"].set_visible(False); ax.tick_params(axis="y", length=0)
 ax.set_xlabel("Log-probability of the stored answer (higher means more likely)"); ax.set_ylabel("Switched off at test time", color=MUTED)
-fig.suptitle("Without magree's gated table the gap rises, because that table lifts the wrong answer more", x=.01, ha="left", fontsize=11.5, color=INK)
+fig.suptitle("Without FitGate Memory's gated table the gap rises, because that table lifts the wrong answer more", x=.01, ha="left", fontsize=11.5, color=INK)
 ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(.5, -.2), ncol=2, fontsize=10)
 fig.tight_layout(); fig.savefig(os.path.join(HERE, "charts", "switch-off.png")); plt.close(fig)
