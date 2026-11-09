@@ -1,6 +1,6 @@
 # Research directions for LLM memory modules
 
-These directions were written for the public environment. The paper in this repo is on what each part of `fitgate` does, and its questions are in [QUESTIONS.md](QUESTIONS.md).
+These directions were written for the public environment. The paper in this repo is on what each part of `fitgate` does, and its questions are on the [paper page](https://vcn2lh6dzewa.feishu.cn/wiki/SDF4wzUdfi1s0jko0xxc3PtLncf).
 
 > [!IMPORTANT]
 > **Each direction below can support a separate paper.** The strongest result so far is `mmomez` at 1h, about 43M weights: it has the lowest web loss, ties the best published modules on fact recall, and loses the relation gap. The largest tier has never run, and nothing yet shows the small models predict large ones. Check all of it before you submit.

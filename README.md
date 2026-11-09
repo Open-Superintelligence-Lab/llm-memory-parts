@@ -1,7 +1,7 @@
 # What each part of an LLM memory design does
 
 > [!IMPORTANT]
-> This is the private repo for our ICML 2027 paper on **FitGate Memory** (`fitgate` in the code), a memory design with three lookup tables and MoE. Its gated table keeps a row only when the row fits what the model already expects next. The paper asks what each part of FitGate Memory does. It was called `magree` in llm-memory-env and in earlier posts. **[QUESTIONS.md](QUESTIONS.md) lists the 12 questions to pick.** The code and results are a copy of the public environment [llm-memory-env](https://github.com/vukrosic/llm-memory-env), which was built in [AI Research School](https://www.skool.com/become-ai-researcher-2669).
+> This is the private repo for our ICML 2027 paper on **FitGate Memory** (`fitgate` in the code), a memory design with three lookup tables and MoE. Its gated table keeps a row only when the row fits what the model already expects next. The paper asks what each part of FitGate Memory does. It was called `magree` in llm-memory-env and in earlier posts. **The 12 questions to pick are on the [paper page](https://vcn2lh6dzewa.feishu.cn/wiki/SDF4wzUdfi1s0jko0xxc3PtLncf).** The code and results are a copy of the public environment [llm-memory-env](https://github.com/vukrosic/llm-memory-env), which was built in [AI Research School](https://www.skool.com/become-ai-researcher-2669).
 >
 > A memory module gives an LLM a learned table to look things up in. This repo tests 9 published modules and about 90 new designs on the same text at several sizes. The largest size so far has about 43M weights. **At that size, the design below has the lowest web loss of the 21 modules tested and ties the best published modules on fact recall. It loses one score, the relation gap.**
 
